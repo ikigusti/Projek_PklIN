@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('ID_game');
             $table->unsignedBigInteger('id_daftar');
             $table->foreign('id_daftar')->references('id')->on('daftars')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
