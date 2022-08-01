@@ -34,8 +34,11 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nama Game</label>
-                                <input type="text" class="form-control  @error('nama_game') is-invalid @enderror"
-                                    name="nama_game">
+                                <select name="nama_game" class="form-control @error('nama_game') is-invalid @enderror">
+                                    <option value="Mobile Legends">Mobile Legends</option>
+                                      <option value="PlayerUnknown's Battlegrounds">PlayerUnknown's Battlegrounds</option>
+                                      <option value="Free Fire">Free Fire</option>
+                                </select>
                                 @error('nama_game')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
