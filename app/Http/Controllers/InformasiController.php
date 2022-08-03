@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\informasi;
 use Illuminate\Http\Request;
 
 class InformasiController extends Controller
@@ -11,9 +12,16 @@ class InformasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        //
+        //menampilkan semua data dari model informasi
+        $informasi = informasi::all();
+        return view('informasi.index', compact('informasi'));
     }
 
     /**
@@ -24,6 +32,7 @@ class InformasiController extends Controller
     public function create()
     {
         //
+        return view('informasi.create');
     }
 
     /**
@@ -34,7 +43,27 @@ class InformasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validasi
+        $validated = $request->validate([
+            'nama_game' => 'required|unique:informasis',
+            'keterangan' => 'required',
+            'pengertian' => 'required',
+            'gambar' => 'required|image|max:2048',
+        ]);
+
+        $informasi = new informasi();
+        $informasi->nama_game = $request->nama_game;
+        $informasi->keterangan = $request->keterangan;
+        $informasi->pengertian = $request->pengertian;
+        if ($request->hasFile('gambar')) {
+            $image = $request->file('gambar');
+            $name = rand(1000, 9999) . $image->getClientOriginalName();
+            $image->move('images/informasi/', $name);
+            $informasi->gambar = $name;
+        }
+        $informasi->save();
+        return redirect()->route('informasi.index')
+            ->with('success', 'Data berhasil dibuat!');
     }
 
     /**
@@ -45,7 +74,8 @@ class InformasiController extends Controller
      */
     public function show($id)
     {
-        //
+        $informasi = informasi::findOrFail($id);
+        return view('informasi.show', compact('informasi'));
     }
 
     /**
@@ -56,7 +86,9 @@ class InformasiController extends Controller
      */
     public function edit($id)
     {
-        //
+        $informasi = informasi::findOrFail($id);
+        return view('informasi.edit', compact('informasi'));
+
     }
 
     /**
@@ -68,7 +100,29 @@ class InformasiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validasi
+        $validated = $request->validate([
+
+            'nama_game' => 'required|max:255',
+            'keterangan' => 'required',
+            'pengertian' => 'required',
+            'gambar' => 'required|image|max:2048',
+        ]);
+
+        $informasi = informasi::findOrFail($id);
+        $informasi->nama_game = $request->nama_game;
+        $informasi->keterangan = $request->keterangan;
+        $informasi->pengertian = $request->pengertian;
+        if ($request->hasFile('gambar')) {
+    $image = $request->file('gambar');
+    $name = rand(1000, 9999) . $image->getClientOriginalName();
+    $image->move('images/informasi/', $name);
+    $informasi->gambar = $name;
+}
+
+        $informasi->save();
+        return redirect()->route('informasi.index')
+            ->with('success', 'Data berhasil diedit!');
     }
 
     /**
@@ -79,6 +133,9 @@ class InformasiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $informasi = informasi::findOrFail($id);
+        $informasi->delete();
+        return redirect()->route('informasi.index')
+            ->with('success', 'Data berhasil dihapus!');
     }
 }

@@ -118,7 +118,12 @@ class LokerController extends Controller
         $loker->lowongan = $request->lowongan;
         $loker->nama_game = $request->nama_game;
         $loker->role = $request->role;
-        $loker->gambar = $request->gambar;
+        if ($request->hasFile('gambar')) {
+            $image = $request->file('gambar');
+            $name = rand(1000, 9999) . $image->getClientOriginalName();
+            $image->move('images/loker/', $name);
+            $loker->gambar = $name;
+        }
 
         $loker->save();
         return redirect()->route('loker.index')

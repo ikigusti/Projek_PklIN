@@ -7,19 +7,19 @@
           <a href="" class="simple-text logo-mini">
             CT
           </a>
-          <a href="javascript:void(0)" class="simple-text logo-normal">
-            Creative Tim
+          <a href="./home" class="simple-text logo-normal">
+            Home
           </a>
         </div>
         <ul class="nav">
           <li class="active ">
-            <a href="./loker.index">
+            <a href="./loker">
               <p>Loker</p>
             </a>
           </li>
           <li>
-            <a href="">
-              <p></p>
+            <a href="./informasi">
+              <p>Informasi</p>
             </a>
           </li>
           <li>
